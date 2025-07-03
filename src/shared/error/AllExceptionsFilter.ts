@@ -1,0 +1,73 @@
+/* eslint-disable no-console */
+import { ArgumentsHost, Catch, HttpException, HttpServer, HttpStatus, Inject } from '@nestjs/common';
+import { BaseExceptionFilter } from '@nestjs/core';
+import { Request, Response } from 'express';
+import { ErrorLog } from '@shared/error/error-log';
+import { isJson } from '@shared/utils';
+import { ConfigService } from '@nestjs/config';
+
+@Catch()
+export class GlobalExceptionHandler extends BaseExceptionFilter {
+	@Inject() private readonly configService: ConfigService;
+	constructor(applicationRef: HttpServer) {
+		super(applicationRef);
+	}
+
+	async catch(exception: any, host: ArgumentsHost) {
+		console.log(`error catched`, exception);
+		if (typeof exception === 'string') {
+			try {
+				exception = JSON.parse(exception);
+			} catch (e) {
+				console.log(`error ===>`, e);
+			}
+		}
+		const ctx = host.switchToHttp();
+		const response = ctx.getResponse<Response>();
+		const request = ctx.getRequest();
+		const isHttpException = exception instanceof HttpException;
+		const exceptionData: any = isHttpException ? exception?.getResponse() : exception;
+		// eslint-disable-next-line no-console
+
+		const ClientRequest = ctx.getRequest<Request>();
+		const status = isHttpException ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
+		const errorLog: any = new ErrorLog(
+			exceptionData,
+			status,
+			ClientRequest.url,
+			ClientRequest,
+			ClientRequest.user,
+			this.configService,
+		);
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		const { tags, ...error } = errorLog;
+
+		console.log(
+			`hostname: ${this.configService?.get<string>('HOSTNAME')}; exception::`,
+			ClientRequest.url,
+			ClientRequest.body,
+			exceptionData,
+			error,
+		);
+
+		for (const key in error) {
+			error[key] = error && error[key] && isJson(error[key]) ? JSON.parse(error[key]) : undefined;
+		}
+
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
+		// if (this.configService?.get<string>('NODE_ENV') !== 'production') {
+		// }
+
+		if (response.headersSent) {
+			request.headers['x-mode'] = 'dev';
+		}
+
+		return response.status(status).json({
+			error,
+			errorId: error?.errorId,
+			response: { code: error?.response?.code },
+			sentry_link: `https://sentry.ijro.uz/organizations/unicon-soft/issues/?query=errorId%3A${error?.errorId}&statsPeriod=14d`,
+		});
+	}
+}
