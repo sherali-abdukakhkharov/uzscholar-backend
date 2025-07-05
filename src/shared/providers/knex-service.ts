@@ -25,6 +25,7 @@ export function masterKnexConfigUseFactory(
 				password: configService.get<string>('PGPASSWORD'),
 				port: Number(configService.get<string>('PGPORT')),
 				application_name: `new adm edo ${new Date().getTime()}`,
+				ssl: configService.get<string>('PGSSL') === 'true' ? { rejectUnauthorized: false } : false,
 			},
 			pool: {
 				min: 0,
@@ -49,6 +50,7 @@ export function slaveKnexConfigUseFactory(
 				port: Number(configService.get<string>('READ_PGPORT')),
 				application_name: `new adm edo ${new Date().getTime()}`,
 				query_timeout: 50000,
+				ssl: configService.get<string>('PGSSL') === 'true' ? { rejectUnauthorized: false } : false,
 			},
 			pool: {
 				min: 0,

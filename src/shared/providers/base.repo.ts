@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { AddKnexRaw, IBaseSelectOptions, IBaseTable, WithTotal } from '@shared/interfaces/base-repo.interface';
+import { AddKnexRaw, IBaseSelectOptions, IBaseTable } from '@shared/interfaces/base-repo.interface';
 import ObjectID from 'bson-objectid';
 import { Knex } from 'knex';
 import { isEmpty } from 'lodash';
@@ -16,12 +16,10 @@ export abstract class BaseRepo<ITable extends Pick<IBaseTable, 'id'>> {
 		where: Partial<ITable>,
 		options: IBaseSelectOptions<ITable> = {},
 		trx?: Knex.Transaction,
-	): Knex.QueryBuilder<null, IResponse extends Array<infer U> ? WithTotal<U>[] : WithTotal<IResponse>> {
+	): Knex.QueryBuilder<null, IResponse extends Array<infer U> ? U[] : IResponse> {
 		const { limit = 20, offset = 0, columns = ['*'] } = options;
 		const knex = trx ? trx : this.knexRead;
 		const query: Knex.QueryBuilder = knex.select(columns).from(this.tableName).where(where);
-
-		query.select(knex.raw(`count(*) over()::int as total`));
 
 		if (limit) {
 			query.limit(Number(limit));
