@@ -40,13 +40,7 @@ export class GlobalExceptionHandler extends BaseExceptionFilter {
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		const { tags, ...error } = errorLog;
 
-		console.log(
-			`hostname: ${this.configService?.get<string>('HOSTNAME')}; exception::`,
-			ClientRequest.url,
-			ClientRequest.body,
-			exceptionData,
-			error,
-		);
+		console.log(`exception::`, ClientRequest.url, ClientRequest.body, exceptionData, error);
 
 		for (const key in error) {
 			error[key] = error && error[key] && isJson(error[key]) ? JSON.parse(error[key]) : undefined;
