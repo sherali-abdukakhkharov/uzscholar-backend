@@ -19,7 +19,6 @@ export function isJson(value) {
 		JSON.parse(value);
 		return true;
 	} catch (error) {
-		console.log(`error ====>`, error);
 		return false;
 	}
 }

@@ -7,6 +7,7 @@ import { KnexModule } from 'nestjs-knex';
 import { masterKnexConfigUseFactory, slaveKnexConfigUseFactory } from '@shared/providers/knex-service';
 import { GlobalExceptionHandler } from '@shared/error/AllExceptionsFilter';
 import { SharedModule } from '@shared/shared.module';
+import { CategoryModule } from './categories/categories.module';
 @Module({
 	imports: [
 		ConfigModule.forRoot({ envFilePath: ['/app/.env', '.env'], isGlobal: true }),
@@ -27,6 +28,7 @@ import { SharedModule } from '@shared/shared.module';
 			'slave',
 		),
 		SharedModule,
+		CategoryModule,
 	],
 	controllers: [AppController],
 	providers: [
