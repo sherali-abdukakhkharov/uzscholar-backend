@@ -14,7 +14,6 @@ export class GlobalExceptionHandler extends BaseExceptionFilter {
 	}
 
 	async catch(exception: any, host: ArgumentsHost) {
-		console.log(`error catched`, exception);
 		if (typeof exception === 'string') {
 			try {
 				exception = JSON.parse(exception);
@@ -24,7 +23,6 @@ export class GlobalExceptionHandler extends BaseExceptionFilter {
 		}
 		const ctx = host.switchToHttp();
 		const response = ctx.getResponse<Response>();
-		const request = ctx.getRequest();
 		const isHttpException = exception instanceof HttpException;
 		const exceptionData: any = isHttpException ? exception?.getResponse() : exception;
 		// eslint-disable-next-line no-console
@@ -54,20 +52,10 @@ export class GlobalExceptionHandler extends BaseExceptionFilter {
 			error[key] = error && error[key] && isJson(error[key]) ? JSON.parse(error[key]) : undefined;
 		}
 
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-
-		// if (this.configService?.get<string>('NODE_ENV') !== 'production') {
-		// }
-
-		if (response.headersSent) {
-			request.headers['x-mode'] = 'dev';
-		}
-
 		return response.status(status).json({
 			error,
 			errorId: error?.errorId,
 			response: { code: error?.response?.code },
-			sentry_link: `https://sentry.ijro.uz/organizations/unicon-soft/issues/?query=errorId%3A${error?.errorId}&statsPeriod=14d`,
 		});
 	}
 }
