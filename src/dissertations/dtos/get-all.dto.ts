@@ -1,0 +1,19 @@
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+
+export class GetAllDissertationsDto {
+	@ApiPropertyOptional()
+	@IsString()
+	@IsOptional()
+	category_id?: string;
+
+	@ApiProperty()
+	@IsNumber()
+	@IsNotEmpty()
+	limit: number;
+
+	@ApiProperty()
+	@IsNumber()
+	@IsNotEmpty()
+	offset: number;
+}

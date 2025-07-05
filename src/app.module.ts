@@ -8,6 +8,7 @@ import { masterKnexConfigUseFactory, slaveKnexConfigUseFactory } from '@shared/p
 import { GlobalExceptionHandler } from '@shared/error/AllExceptionsFilter';
 import { SharedModule } from '@shared/shared.module';
 import { CategoryModule } from './categories/categories.module';
+import { DissertationModule } from './dissertations/dissertation.module';
 @Module({
 	imports: [
 		ConfigModule.forRoot({ envFilePath: ['/app/.env', '.env'], isGlobal: true }),
@@ -29,6 +30,7 @@ import { CategoryModule } from './categories/categories.module';
 		),
 		SharedModule,
 		CategoryModule,
+		DissertationModule,
 	],
 	controllers: [AppController],
 	providers: [
