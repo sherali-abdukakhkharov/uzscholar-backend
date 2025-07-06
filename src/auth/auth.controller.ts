@@ -1,5 +1,5 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
-import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { LoginByPasswordDto } from './dtos/login-by-password.dto';
 import { AuthService } from './auth.service';
 import { AuthorizationGuard } from '@shared/guards/authorization.guard';
@@ -21,6 +21,7 @@ export class AuthController {
 	}
 
 	@UseGuards(AuthorizationGuard)
+	@ApiBearerAuth('authorization')
 	@Post('get-user')
 	async getUser(@CurrentUser() user: ICurrentUser) {
 		return user;
