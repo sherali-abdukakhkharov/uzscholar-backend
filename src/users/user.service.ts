@@ -16,4 +16,8 @@ export class UserService {
 			columns,
 		);
 	}
+
+	insert(value: UserEntity) {
+		return this.userRepo.insert(value);
+	}
 }

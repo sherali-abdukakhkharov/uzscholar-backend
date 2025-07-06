@@ -5,6 +5,7 @@ import { AuthService } from './auth.service';
 import { AuthorizationGuard } from '@shared/guards/authorization.guard';
 import { CurrentUser } from '@shared/decorators/current-user.decorator';
 import { ICurrentUser } from 'src/users/interfaces/current-user.interface';
+import { SignUpDto } from './dtos/signup.dto';
 
 @Controller('auth')
 @ApiTags('auth')
@@ -25,5 +26,14 @@ export class AuthController {
 	@Post('get-user')
 	async getUser(@CurrentUser() user: ICurrentUser) {
 		return user;
+	}
+
+	@ApiBody({
+		type: SignUpDto,
+		description: 'login by username and password',
+	})
+	@Post('signup')
+	async signup(@Body() body: SignUpDto) {
+		return this.authService.signup(body);
 	}
 }

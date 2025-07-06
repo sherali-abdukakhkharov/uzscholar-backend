@@ -1,4 +1,10 @@
-import { ForbiddenException, Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
+import {
+	BadRequestException,
+	ForbiddenException,
+	Injectable,
+	InternalServerErrorException,
+	UnauthorizedException,
+} from '@nestjs/common';
 import { UserService } from 'src/users/user.service';
 import { LoginByPasswordDto } from './dtos/login-by-password.dto';
 import { isEmpty } from 'lodash';
@@ -7,6 +13,8 @@ import { ConfigService } from '@nestjs/config';
 import * as dayjs from 'dayjs';
 import { generateRandomCode } from '@shared/utils';
 import { ICurrentUser } from 'src/users/interfaces/current-user.interface';
+import { SignUpDto } from './dtos/signup.dto';
+import { generateRecordId } from '@shared/utils/generate-id';
 
 @Injectable()
 export class AuthService {
@@ -57,6 +65,28 @@ export class AuthService {
 		} catch (error) {
 			throw new ForbiddenException(error);
 		}
+	}
+
+	async signup(body: SignUpDto) {
+		const isUserExists = this.userService.selectByUsername(body.username);
+
+		if (!isEmpty(isUserExists)) {
+			throw new BadRequestException('this username is already taken');
+		}
+
+		const [user] = await this.userService.insert({
+			id: generateRecordId(),
+			first_name: body.first_name,
+			last_name: body.last_name,
+			middle_name: body.middle_name,
+			email: body.email,
+			username: body.username,
+			password: body.password,
+		});
+
+		delete user.password;
+
+		return this.createToken(user, 8);
 	}
 
 	private async createToken(user: ICurrentUser, refreshTokenExpirationInHours: number) {
