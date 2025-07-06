@@ -20,19 +20,11 @@ export function addSwagger(app: NestExpressApplication) {
 		.addTag('auth')
 		.addBearerAuth(
 			{
-				name: 'x-session-id',
-				type: 'apiKey',
-				in: 'header',
-			},
-			'authorization',
-		)
-		.addBearerAuth(
-			{
 				name: 'authorization',
 				type: 'apiKey',
 				in: 'header',
 			},
-			'authorization_v2',
+			'authorization',
 		)
 		.build();
 
