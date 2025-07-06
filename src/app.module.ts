@@ -9,6 +9,8 @@ import { GlobalExceptionHandler } from '@shared/error/AllExceptionsFilter';
 import { SharedModule } from '@shared/shared.module';
 import { CategoryModule } from './categories/categories.module';
 import { DissertationModule } from './dissertations/dissertation.module';
+import { UserModule } from './users/user.module';
+import { AuthModule } from './auth/auth.module';
 @Module({
 	imports: [
 		ConfigModule.forRoot({ envFilePath: ['/app/.env', '.env'], isGlobal: true }),
@@ -31,6 +33,8 @@ import { DissertationModule } from './dissertations/dissertation.module';
 		SharedModule,
 		CategoryModule,
 		DissertationModule,
+		UserModule,
+		AuthModule,
 	],
 	controllers: [AppController],
 	providers: [

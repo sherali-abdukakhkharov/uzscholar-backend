@@ -158,3 +158,12 @@ export const filterNonNull = (obj) => {
 	}
 	return obj;
 };
+
+export const generateRandomCode = (chars_length = 2) => {
+	const randomChars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+	let result = '';
+	for (let i = 0; i < chars_length; i++) {
+		result += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
+	}
+	return result;
+};
