@@ -7,6 +7,11 @@ export class GetAllDissertationsDto {
 	@IsOptional()
 	category_id?: string;
 
+	@ApiPropertyOptional()
+	@IsString()
+	@IsOptional()
+	sub_category_id?: string;
+
 	@ApiProperty()
 	@IsNumber()
 	@IsNotEmpty()

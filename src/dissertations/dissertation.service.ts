@@ -22,6 +22,10 @@ export class DissertationService {
 			query.where({ category_id: body.category_id });
 		}
 
+		if (body.sub_category_id) {
+			query.where({ sub_category_id: body.sub_category_id });
+		}
+
 		const totalQuery = query
 			.clone()
 			.clearSelect()
