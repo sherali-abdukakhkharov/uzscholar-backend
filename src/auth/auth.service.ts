@@ -68,7 +68,7 @@ export class AuthService {
 	}
 
 	async signup(body: SignUpDto) {
-		const isUserExists = this.userService.selectByUsername(body.username);
+		const isUserExists = await this.userService.selectByUsername(body.username);
 
 		if (!isEmpty(isUserExists)) {
 			throw new BadRequestException('this username is already taken');
