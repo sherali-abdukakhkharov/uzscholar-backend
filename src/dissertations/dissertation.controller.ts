@@ -18,7 +18,7 @@ export class DissertationController {
 	}
 
 	@ApiBody({
-		type: '',
+		type: GetOneDto,
 		description: 'Get one dissertation by ID',
 	})
 	@Post('get-one')
