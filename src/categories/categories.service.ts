@@ -13,7 +13,7 @@ export class CategoryService {
 				parent_id: body.parent_id ? body.parent_id : null,
 			},
 			{
-				columns: ['id', 'name'],
+				columns: ['id', 'name', 'code'],
 			},
 		);
 
