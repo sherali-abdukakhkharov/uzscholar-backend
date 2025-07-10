@@ -37,4 +37,10 @@ export class DissertationService {
 
 		return { success: true, data, total: Number(totalResult?.total) || 0 };
 	}
+
+	async getOneById(id: string) {
+		const data = await this.dissertationRepo.getOneById(id);
+
+		return { success: true, data: data || null };
+	}
 }
