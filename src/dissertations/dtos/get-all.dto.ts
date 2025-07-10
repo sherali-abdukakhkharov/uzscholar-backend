@@ -12,6 +12,11 @@ export class GetAllDissertationsDto {
 	@IsOptional()
 	sub_category_id?: string;
 
+	@ApiPropertyOptional()
+	@IsOptional()
+	@IsString()
+	search_text?: string;
+
 	@ApiProperty()
 	@IsNumber()
 	@IsNotEmpty()
