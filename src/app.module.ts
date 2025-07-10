@@ -11,6 +11,7 @@ import { CategoryModule } from './categories/categories.module';
 import { DissertationModule } from './dissertations/dissertation.module';
 import { UserModule } from './users/user.module';
 import { AuthModule } from './auth/auth.module';
+import { FileModule } from './files/file.module';
 @Module({
 	imports: [
 		ConfigModule.forRoot({ envFilePath: ['/app/.env', '.env'], isGlobal: true }),
@@ -35,6 +36,7 @@ import { AuthModule } from './auth/auth.module';
 		DissertationModule,
 		UserModule,
 		AuthModule,
+		FileModule,
 	],
 	controllers: [AppController],
 	providers: [

@@ -17,9 +17,7 @@ export class GlobalExceptionHandler extends BaseExceptionFilter {
 		if (typeof exception === 'string') {
 			try {
 				exception = JSON.parse(exception);
-			} catch (e) {
-				console.log(`error ===>`, e);
-			}
+			} catch (e) {}
 		}
 		const ctx = host.switchToHttp();
 		const response = ctx.getResponse<Response>();
