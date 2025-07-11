@@ -38,7 +38,7 @@ export class DissertationRepo extends BaseRepo<DissertationEntity> {
 
 		const knex = this.knexRead;
 		const query = knex
-			.select([['id', 'created_by_name', 'created_at', 'description', 'language_code', 'pages', 'title', 'year']])
+			.select(['id', 'created_by_name', 'created_at', 'description', 'language_code', 'pages', 'title', 'year'])
 			.from(this.tableName)
 			.where('is_deleted', false)
 			.orderBy('id', 'desc');
